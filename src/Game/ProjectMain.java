@@ -1,10 +1,6 @@
 package Game;
 
 import engine.*;
-import engine.Platform.*;
-import engine.Functions.*;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -15,24 +11,33 @@ public class ProjectMain {
 	public static ProjectMain Main;
 	
 	//project variables
-	VAO test;
 	Texture boxTexture;
+	Texture playerTexture;
 	Program blockProgram;
+	TileCol mainTileCol;
+	Player mainPlayer;
 	
 	public void setup() {
 		//set variables here
-		test = new VAO(-250f, -250f, 500f, 500f);
 		boxTexture = new Texture("res/block.png");
+		playerTexture = new Texture("res/char.png");
 		blockProgram = new Program("res/shaders/blockShaders/vert.gls", "res/shaders/blockShaders/frag.gls");
+		mainTileCol = new TileCol(5f);
+		mainPlayer = new Player();
 	}
 	
 	public void gameLoop() {
 		//game here
 		blockProgram.enable();
 		boxTexture.bind();
-		blockProgram.shaders[2].uniforms[0].set(new float[] {0f, 1f, 0f});
-		blockProgram.shaders[0].uniforms[0].set(new float[] {EnigWindow.width, EnigWindow.height});
-		test.render();
+		Program.currentShaderProgram.shaders[0].uniforms[0].set(new float[] {EnigWindow.width, EnigWindow.height});
+		mainTileCol.render(mainPlayer.xpos, mainPlayer.ypos);
+		mainPlayer.updateMovement(mainTileCol);
+		playerTexture.bind();
+		mainPlayer.selection.bindColor();
+		Program.currentShaderProgram.shaders[0].uniforms[1].set(new float[] {-TileCol.BOX_SIZE, -TileCol.BOX_SIZE});
+		TileCol.tileVAO.render();
+		
 	}
 	
 	public static void main(String[] args) {

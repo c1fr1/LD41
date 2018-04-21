@@ -62,9 +62,9 @@ public class VAO {
 	/**
 	 * create a square object
 	 * @param x
-	 * corner x
+	 * corner xpos
 	 * @param y
-	 * corner y
+	 * corner ypos
 	 * @param width
 	 * width of the box
 	 * @param height

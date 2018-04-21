@@ -207,6 +207,7 @@ public class EnigWindow {
 			glfwPollEvents();
 			EnigWindow.checkGLError();
 		}
+		glDisable(GL_DEPTH_TEST);
 		//*/
 	}
 	

@@ -9,15 +9,15 @@ public abstract class PlatformSegment {
 
 	/**
 	 * finds the offset based on the tangent plane so that distance traveled is a constant
-	 * finds the magnitude of the velocity, then adds the y component, and resizes it
+	 * finds the magnitude of the velocity, then adds the ypos component, and resizes it
 	 * @param xPos
-	 * current x position
+	 * current xpos position
 	 * @param zPos
 	 * current z position
 	 * @param xVelocity
-	 * x velocity magnitude
+	 * xpos velocity magnitude
 	 * @param zVelocity
-	 * y velocity magnitude
+	 * ypos velocity magnitude
 	 * @return
 	 * the offset based on the tangent plane so that the distance traveled is a constant
 	 */
@@ -39,13 +39,13 @@ public abstract class PlatformSegment {
 	}
 
 	/**
-	 * finds the height of the object on the plane given the x and z positions
+	 * finds the height of the object on the plane given the xpos and z positions
 	 * @param xPos
-	 * x position
+	 * xpos position
 	 * @param zPos
 	 * z position
 	 * @return
-	 * y value that corresponds to the x and z positions
+	 * ypos value that corresponds to the xpos and z positions
 	 */
 	public abstract float getHeight(float xPos, float zPos);
 
@@ -54,13 +54,13 @@ public abstract class PlatformSegment {
 	}
 
 	/**
-	 * returns the plane tangent to the platform at a given x an z position
+	 * returns the plane tangent to the platform at a given xpos an z position
 	 * @param xPos
-	 * x positon
+	 * xpos positon
 	 * @param zPos
 	 * z position
 	 * @return
-	 * the plane tangent to the platform at a given x and z position
+	 * the plane tangent to the platform at a given xpos and z position
 	 */
 	public abstract Plane getTangentPlane(float xPos, float zPos);
 

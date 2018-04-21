@@ -164,7 +164,7 @@ public class Camera {
 	/**
 	 * finds the angles of rotation based on the current rotation matrix
 	 * @return
-	 * x = pitch, y = yaw, z = roll
+	 * xpos = pitch, ypos = yaw, z = roll
 	 */
 	public Vector3f angles() {
 		float sy = (float) Math.sqrt(rotationMatrix.m00()*rotationMatrix.m00()+rotationMatrix.m10()*rotationMatrix.m10());
@@ -210,7 +210,7 @@ public class Camera {
 	}
 
 	/**
-	 * sets the x rotation to something specific, if the camera doesn't use static rotations, then it simply rotates by v
+	 * sets the xpos rotation to something specific, if the camera doesn't use static rotations, then it simply rotates by v
 	 * @param v
 	 * new value
 	 */
@@ -226,7 +226,7 @@ public class Camera {
 	}
 
 	/**
-	 * sets the y rotation to something specific, if the camera doesn't use static rotations, then it simply rotates by v
+	 * sets the ypos rotation to something specific, if the camera doesn't use static rotations, then it simply rotates by v
 	 * @param v
 	 * new value
 	 */
@@ -279,7 +279,7 @@ public class Camera {
 //[x1*y1*z2 + x2*z1, -x1*y1*z1 + x2*z2, -x1*y2]
 //[-x2*y1*z2 + x1*z1, x2*y1*z1 + x1*z2, x2*y2]
 
-//x: cos:
+//xpos: cos:
 
 //(a + b)(c + d)
 //ac + ad + bc + bd

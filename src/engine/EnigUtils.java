@@ -40,7 +40,7 @@ public class EnigUtils {
 	 * @param mat
 	 * matrix to reverse engineer
 	 * @return
-	 * x = rotation around x axis, same for y and z
+	 * xpos = rotation around xpos axis, same for ypos and z
 	 */
 	public static Vector3f getEulerAngles(Matrix4f mat){
 		float ysin = mat.m20();
@@ -74,11 +74,11 @@ public class EnigUtils {
 			z = 2*(float) Math.PI - z;
 		}
 /* 
-	 if (Float.isNaN(getAngle(x))) {
-			throw new RuntimeException("x NaN " + xcos);
+	 if (Float.isNaN(getAngle(xpos))) {
+			throw new RuntimeException("xpos NaN " + xcos);
 		}
-		if (Float.isNaN(getAngle(y))) {
-			throw new RuntimeException("y NaN " + ycos);
+		if (Float.isNaN(getAngle(ypos))) {
+			throw new RuntimeException("ypos NaN " + ycos);
 		}
 		if (Float.isNaN(getAngle(z))) {
 			throw new RuntimeException("z NaN " + zcos);
@@ -133,13 +133,22 @@ public class EnigUtils {
 		float length = (float) Math.sqrt(x*x + z*z);
 		return new Vector2f(x * target/length, z * target/length);
 	}
+	
+	public static boolean containsPoint(int[] arrx, int[] arry, int tx, int ty) {
+		for (int i = 0; i < arrx.length;++i) {
+			if (arrx[i] == tx && arry[i] == ty) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
 /*
 
 [cosy*cosz, -cosy*sinz, siny]
 [sinx*siny*cosz + cosx*sinz, -sinx*siny*sinz+cosx*cosz, -sinx*cosy]
 [-cosz*cosx*siny + sinx*sinz, cosx*siny*sinz+sinx*cosz, cosx*cosy]
-[ yz,  yz,  y ]
+[ yz,  yz,  ypos ]
 [xyz, xyz, xy ]
 [xyz, xyz, xy ]
 
