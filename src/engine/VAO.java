@@ -29,11 +29,12 @@ public class VAO {
 		vao = glGenVertexArrays();
 		glBindVertexArray(vao);
 		vbos[0] = new VBO(vertices, 3);
+		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 		ibo = glGenBuffers();
 		indices = ind;
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
-		indices = ind;
+		verticesPerShape = 3;
 	}
 
 	/**
@@ -77,9 +78,11 @@ public class VAO {
 				x, y + height, 0f,
 				x, y, 0f,
 				x + width, y, 0f,
-				x + width, y + height//, 0f
+				x + width, y + height, 0f
 		}, 3);
 		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+		
+		addVBO(VBO.squareTCBO());
 		ibo = glGenBuffers();
 		indices = squareIndices();
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);

@@ -41,4 +41,8 @@ public class VBO {
 	public int getVertexCount() {
 		return data.length/vecSize;
 	}
+	
+	public static VBO squareTCBO() {
+		return new VBO(VAO.squareTC(), 2);
+	}
 }

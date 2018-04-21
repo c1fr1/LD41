@@ -15,14 +15,24 @@ public class ProjectMain {
 	public static ProjectMain Main;
 	
 	//project variables
+	VAO test;
+	Texture boxTexture;
+	Program blockProgram;
 	
 	public void setup() {
 		//set variables here
+		test = new VAO(-250f, -250f, 500f, 500f);
+		boxTexture = new Texture("res/block.png");
+		blockProgram = new Program("res/shaders/blockShaders/vert.gls", "res/shaders/blockShaders/frag.gls");
 	}
 	
 	public void gameLoop() {
 		//game here
-		
+		blockProgram.enable();
+		boxTexture.bind();
+		blockProgram.shaders[2].uniforms[0].set(new float[] {0f, 1f, 0f});
+		blockProgram.shaders[0].uniforms[0].set(new float[] {EnigWindow.width, EnigWindow.height});
+		test.render();
 	}
 	
 	public static void main(String[] args) {
@@ -44,6 +54,7 @@ public class ProjectMain {
 	
 	public void cleanup() {
 		Program.disable();
+		Texture.unbind();
 		EnigWindow.mainWindow.resetOffsets();
 		glfwSwapBuffers(EnigWindow.mainWindow.window);
 		glfwPollEvents();
