@@ -142,6 +142,17 @@ public class EnigUtils {
 		}
 		return false;
 	}
+	
+	public static int[] addArrays(int[] a, int[] b) {
+		int[] ret = new int[a.length + b.length];
+		for (int i = 0; i < a.length;i++) {
+			ret[i] = a[i];
+		}
+		for (int i = 0; i < b.length;i++) {
+			ret[i + a.length] = b[i];
+		}
+		return ret;
+	}
 }
 /*
 

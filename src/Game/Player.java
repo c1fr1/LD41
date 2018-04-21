@@ -6,13 +6,17 @@ public class Player {
 	public float xpos = 10f;
 	public float ypos = 2000f;
 	public float yvel = 0f;
+	public int swapCD = 0;
 	public TileCol.TileColor selection;
 	public Player() {
 		selection = TileCol.TileColor.red;
 	}
+	public void testActions(TileCol closest) {
+	
+	}
 	public void updateMovement(TileCol closest) {
-		TileCol.TileColor belowLeftj = closest.checkPoint(xpos, ypos + yvel - TileCol.BOX_SIZE-5f);
-		TileCol.TileColor belowRightj = closest.checkPoint(xpos + TileCol.BOX_SIZE, ypos + yvel - TileCol.BOX_SIZE-5f);
+		TileCol.TileColor belowLeftj = closest.checkPoint((xpos % 800) + 1f, ypos + yvel - TileCol.BOX_SIZE-5f);
+		TileCol.TileColor belowRightj = closest.checkPoint((xpos % 800) + TileCol.BOX_SIZE - 1f, ypos + yvel - TileCol.BOX_SIZE-5f);
 		boolean llj = true;
 		if (belowLeftj == null) {
 			llj = false;
@@ -32,8 +36,8 @@ public class Player {
 			}
 		}
 		
-		TileCol.TileColor aboveLeft = closest.checkPoint(xpos + 5f, ypos + yvel);
-		TileCol.TileColor aboveRight = closest.checkPoint(xpos + TileCol.BOX_SIZE - 5f, ypos + yvel);
+		TileCol.TileColor aboveLeft = closest.checkPoint((xpos % 800) + 5f, ypos + yvel);
+		TileCol.TileColor aboveRight = closest.checkPoint((xpos % 800) + TileCol.BOX_SIZE - 5f, ypos + yvel);
 		boolean al = true;
 		if (aboveLeft == null) {
 			al = false;
@@ -46,8 +50,8 @@ public class Player {
 		}else if (aboveRight.equals(selection)) {
 			ar = false;
 		}
-		TileCol.TileColor belowLeft = closest.checkPoint(xpos + 5f, ypos + yvel - TileCol.BOX_SIZE);
-		TileCol.TileColor belowRight = closest.checkPoint(xpos + TileCol.BOX_SIZE - 5f, ypos + yvel - TileCol.BOX_SIZE);
+		TileCol.TileColor belowLeft = closest.checkPoint((xpos % 800) + 5f, ypos + yvel - TileCol.BOX_SIZE);
+		TileCol.TileColor belowRight = closest.checkPoint((xpos % 800) + TileCol.BOX_SIZE - 5f, ypos + yvel - TileCol.BOX_SIZE);
 		boolean ll = true;
 		if (belowLeft == null) {
 			ll = false;
@@ -64,6 +68,7 @@ public class Player {
 			
 			if (ar || al) {
 				yvel = 0f;
+				ypos = Math.round(ypos/TileCol.BOX_SIZE)*TileCol.BOX_SIZE;
 			}else {
 				ypos += yvel;
 				yvel -= 1f;
@@ -71,14 +76,15 @@ public class Player {
 		}else {
 			if (lr || ll) {
 				yvel = 0f;
+				ypos = Math.round(ypos/TileCol.BOX_SIZE)*TileCol.BOX_SIZE;
 			}else {
 				ypos += yvel;
 				yvel -= 1f;
 			}
 		}
 		
-		TileCol.TileColor rightUp = closest.checkPoint(xpos + TileCol.BOX_SIZE + 5.1f, ypos - 5f);
-		TileCol.TileColor rightDown = closest.checkPoint(xpos + TileCol.BOX_SIZE + 5.1f, ypos - TileCol.BOX_SIZE + 5f);
+		TileCol.TileColor rightUp = closest.checkPoint((xpos % 800) + TileCol.BOX_SIZE + 10.1f, ypos - 5f);
+		TileCol.TileColor rightDown = closest.checkPoint((xpos % 800) + TileCol.BOX_SIZE + 10.1f, ypos - TileCol.BOX_SIZE + 5f);
 		boolean ru = true;
 		if (rightUp == null) {
 			ru = false;
@@ -93,11 +99,13 @@ public class Player {
 		}
 		if (EnigWindow.mainWindow.keys[UserControls.right] > 0) {
 			if (!(rd || ru)) {
-				xpos += 5.1f;
+				xpos += 10.1f;
+			}else {
+				xpos = Math.round(xpos/TileCol.BOX_SIZE) * TileCol.BOX_SIZE;
 			}
 		}
-		TileCol.TileColor leftUp = closest.checkPoint(xpos - 5.1f, ypos - 5f);
-		TileCol.TileColor leftDown = closest.checkPoint(xpos - 5.1f, ypos - TileCol.BOX_SIZE + 5f);
+		TileCol.TileColor leftUp = closest.checkPoint((xpos % 800) - 10.1f, ypos - 5f);
+		TileCol.TileColor leftDown = closest.checkPoint((xpos % 800) - 10.1f, ypos - TileCol.BOX_SIZE + 5f);
 		boolean lu = true;
 		if (leftUp == null) {
 			lu = false;
@@ -112,8 +120,76 @@ public class Player {
 		}
 		if (EnigWindow.mainWindow.keys[UserControls.left] > 0) {
 			if (!(ld || lu)) {
-				xpos -= 5.1f;
+				xpos -= 10.1f;
+			}else {
+				xpos = Math.round(xpos/TileCol.BOX_SIZE) * TileCol.BOX_SIZE;
 			}
 		}
+		
+		if (EnigWindow.mainWindow.keys[UserControls.sdown] > 0) {
+			TileCol.TileColor below = closest.checkPoint((xpos % 800) + TileCol.BOX_SIZE/2f, ypos - 1.5f*TileCol.BOX_SIZE);
+			if (below != null) {
+				xpos = Math.round(xpos/100) * 100;
+				ypos -= 5f;
+				selection = below;
+			}
+		}
+		if (EnigWindow.mainWindow.keys[UserControls.sleft] > 0 && swapCD <= 0) {
+			float x1 = (xpos % 800) + TileCol.BOX_SIZE/2f;
+			float y1 = ypos - 0.5f*TileCol.BOX_SIZE;
+			float x2 = (xpos % 800) - TileCol.BOX_SIZE/2f;
+			float y2 = ypos - 0.5f*TileCol.BOX_SIZE;
+			closest.safeSwapPoints(x1, y1, x2, y2);
+			int[][] matching = closest.countNeighbors(-1 + (int) (x1/TileCol.BOX_SIZE), (int) (y1/TileCol.BOX_SIZE));
+			if (matching[0].length > 3) {
+				closest.fillPoints(matching, selection);
+			}
+			matching = closest.countNeighbors(-1 + (int) (x2/TileCol.BOX_SIZE), (int) (y2/TileCol.BOX_SIZE));
+			if (matching[0].length > 3) {
+				closest.fillPoints(matching, selection);
+			}
+			swapCD = 11;
+		}
+		if (EnigWindow.mainWindow.keys[UserControls.sright] > 0 && swapCD <= 0) {
+			float x1 = (xpos % 800) + TileCol.BOX_SIZE/2f;
+			float y1 = ypos - 0.5f*TileCol.BOX_SIZE;
+			float x2 = (xpos % 800) + 1.5f*TileCol.BOX_SIZE;
+			float y2 = ypos - 0.5f*TileCol.BOX_SIZE;
+			closest.safeSwapPoints(x1, y1, x2, y2);
+			int[][] matching = closest.countNeighbors(-1 + (int) (x1/TileCol.BOX_SIZE), (int) (y1/TileCol.BOX_SIZE));
+			if (matching[0].length > 4) {
+				closest.fillPoints(matching, selection);
+			}
+			matching = closest.countNeighbors(-1 + (int) (x2/TileCol.BOX_SIZE), (int) (y2/TileCol.BOX_SIZE));
+			if (matching[0].length > 4) {
+				closest.fillPoints(matching, selection);
+			}
+			swapCD = 11;
+		}
+		if (EnigWindow.mainWindow.keys[UserControls.sup] > 0 && swapCD <= 0) {
+			float x1 = (xpos % 800) + TileCol.BOX_SIZE/2f;
+			float y1 = ypos - 0.5f*TileCol.BOX_SIZE;
+			float x2 = (xpos % 800) + TileCol.BOX_SIZE/2f;
+			float y2 = ypos + 0.5f*TileCol.BOX_SIZE;
+			closest.safeSwapPoints(x1, y1, x2, y2);
+			int[][] matching = closest.countNeighbors(-1 + (int) (x1/TileCol.BOX_SIZE), (int) (y1/TileCol.BOX_SIZE));
+			if (matching[0].length > 4) {
+				ProjectMain.score += matching[0].length * ProjectMain.mult;
+				closest.fillPoints(matching, selection);
+			}
+			matching = closest.countNeighbors(-1 + (int) (x2/TileCol.BOX_SIZE), (int) (y2/TileCol.BOX_SIZE));
+			if (matching[0].length > 4) {
+				ProjectMain.score += matching[0].length * ProjectMain.mult;
+				closest.fillPoints(matching, selection);
+			}
+			swapCD = 11;
+		}
+		if (yvel < -TileCol.BOX_SIZE/2f) {
+			yvel = -TileCol.BOX_SIZE/2f;
+		}else if (yvel > TileCol.BOX_SIZE/2f) {
+			yvel = TileCol.BOX_SIZE/2f;
+		}
+		
+		--swapCD;
 	}
 }

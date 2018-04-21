@@ -1,0 +1,21 @@
+#version 400 core
+
+uniform sampler2D textureSampler;
+uniform vec3 tileColor;
+
+in vec2 texCoords;
+
+out vec4 color;
+
+float rand(vec2 co){
+    return mod(fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453), 1f);
+}
+
+void main() {
+    color = texture(textureSampler, texCoords);
+    /*if (color.w > 1) {
+        float randis = rand(gl_FragCoord.xy);
+        float sqrd = randis * randis;
+        color.xyz += sqrd * -color.xyz + tileColor.xyz;
+    }*/
+}

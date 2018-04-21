@@ -9,12 +9,12 @@ public class UserControls {
 	public static int right = GLFW_KEY_D;
 	public static int down = GLFW_KEY_LEFT_SHIFT;
 	public static int up = GLFW_KEY_SPACE;
-	public static int lroll = GLFW_KEY_Q;
-	public static int rroll = GLFW_KEY_E;
-	public static int setSailTarget = GLFW_KEY_F;
+	public static int sdown = GLFW_KEY_DOWN;
+	public static int sup = GLFW_KEY_UP;
+	public static int sleft = GLFW_KEY_LEFT;
+	public static int sright = GLFW_KEY_RIGHT;
 	public static int pause = GLFW_KEY_P;
 	public static float sensitivity = 1f/500f;
-	public static boolean commonCamera = false;
 	
 /*
 	if commonCamera is true, the camera rotation for most 3d games will be used, if it is false, this alternate method is used:
