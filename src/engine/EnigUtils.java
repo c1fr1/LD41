@@ -108,7 +108,7 @@ public class EnigUtils {
 	public static void printFloatArray(float[] in) {
 		System.out.print("[");
 		for (float f:in) {
-			System.out.print(Math.round(f * 100)/100 + ", ");
+			System.out.print(f + ", ");
 		}
 		System.out.println("]");
 	}

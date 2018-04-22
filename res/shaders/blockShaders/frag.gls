@@ -10,7 +10,7 @@ out vec4 color;
 void main() {
     color = texture(textureSampler, texCoords);
     if (color.w < 0.6 && color.w > 0.4) {
-        color.xyz = tileColor + (vec3(0.5f, 0.5f, 0.5f) - color.xyz);
+        color.xyz = tileColor + (vec3(0.3f, 0.3f, 0.3f) - color.xyz);
         color.w = 1f;
     }
 }

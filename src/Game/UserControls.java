@@ -13,6 +13,7 @@ public class UserControls {
 	public static int sup = GLFW_KEY_UP;
 	public static int sleft = GLFW_KEY_LEFT;
 	public static int sright = GLFW_KEY_RIGHT;
+	public static int restart = GLFW_KEY_R;
 	public static int pause = GLFW_KEY_P;
 	public static float sensitivity = 1f/500f;
 	

@@ -15,20 +15,36 @@ public class ProjectMain {
 	//project variables
 	Texture boxTexture;
 	Texture playerTexture;
+	Texture overTexture;
 	Program blockProgram;
 	Program laserProgram;
+	Program backgroundProgram;
+	Program endProgram;
+	Program wallProgram;
 	TileCol[] columns;
 	ArrayList<Laser> lasers = new ArrayList<Laser>();
+	VAO backgroundObejct;
+	VAO endObject;
+	float[] backgroundColor;
 	public Player mainPlayer;
 	public static int score = 0;
 	public static int mult = 1;
+	public static int nextGoal = 2;
+	public static float wallpos = 2300;
 	
 	public void setup() {
 		//set variables here
 		boxTexture = new Texture("res/block.png");
 		playerTexture = new Texture("res/char.png");
+		overTexture = new Texture("res/gameOver.png");
 		blockProgram = new Program("res/shaders/blockShaders/vert.gls", "res/shaders/blockShaders/frag.gls");
 		laserProgram = new Program("res/shaders/laserShaders/vert.gls", "res/shaders/laserShaders/frag.gls");
+		backgroundProgram = new Program("res/shaders/backgroundShaders/vert.gls", "res/shaders/backgroundShaders/frag.gls");
+		endProgram = new Program("res/shaders/endShaders/vert.gls", "res/shaders/endShaders/frag.gls");
+		wallProgram = new Program("res/shaders/wallShaders/vert.gls", "res/shaders/wallShaders/frag.gls");
+		backgroundObejct = new VAO(-1f, -1f, 2f, 2f);
+		endObject = new VAO(-500, -500, 1000, 1000);
+		backgroundColor = new float[] {0.3f, 0f, 0f};
 		columns = new TileCol[999];
 		for (int i = 0; i < columns.length;++i) {
 			columns[i] = new TileCol((float) i * 800);
@@ -39,6 +55,22 @@ public class ProjectMain {
 	
 	public void gameLoop() {
 		//game here
+		//render backgournd
+		for (int i = 0; i < backgroundColor.length;++i) {
+			backgroundColor[i] *= 0.99;
+			backgroundColor[i] += mainPlayer.selection.realColor[i] * 0.005f;
+		}
+		backgroundProgram.enable();
+		if (mainPlayer.ypos < -50) {
+			backgroundColor[0] += 0.2f;
+			backgroundColor[1] += 0.2f;
+			backgroundColor[2] += 0.2f;
+		}
+		Program.currentShaderProgram.shaders[2].uniforms[0].set(backgroundColor);
+		Program.currentShaderProgram.shaders[2].uniforms[1].set(new float[] {EnigWindow.width, EnigWindow.height});
+		backgroundObejct.render();
+		
+		//render columns
 		int idx = (int) (mainPlayer.xpos/800);
 		if (idx > mult) {
 			mult = idx;
@@ -53,12 +85,20 @@ public class ProjectMain {
 				col.render(mainPlayer.xpos, mainPlayer.ypos);
 			}
 		}
+		//update and render player
 		mainPlayer.updateMovement(mainTileCol);
-		playerTexture.bind();
-		mainPlayer.selection.bindColor();
-		Program.currentShaderProgram.shaders[0].uniforms[1].set(new float[] {-TileCol.BOX_SIZE, -TileCol.BOX_SIZE});
-		TileCol.tileVAO.render();
-		//System.out.println(score);
+		if (mainPlayer.ypos > -50) {
+			playerTexture.bind();
+			mainPlayer.selection.bindColor();
+			Program.currentShaderProgram.shaders[0].uniforms[1].set(new float[]{-TileCol.BOX_SIZE, -TileCol.BOX_SIZE});
+			TileCol.tileVAO.render();
+		}else {
+			endProgram.enable();
+			overTexture.bind();
+			Program.currentShaderProgram.shaders[0].uniforms[0].set(new float[] {EnigWindow.width, EnigWindow.height});
+			endObject.render();
+		}
+		//lasers
 		laserProgram.enable();
 		Laser.laserTexture.bind();
 		Program.currentShaderProgram.shaders[0].uniforms[0].set(new float[] {EnigWindow.width, EnigWindow.height});
@@ -67,16 +107,45 @@ public class ProjectMain {
 			englishPaper.render(mainPlayer.xpos, mainPlayer.ypos);
 		}
 		double rand = Math.random();
-		double leg = Math.pow(1-1/Math.log(Math.E + score), 16);
+		double leg = Math.pow(1-1/Math.log(Math.E + score), 32);
 		if (rand < leg) {
 			lasers.add(new Laser(mainPlayer.xpos, mainPlayer.ypos));
-			System.out.println(lasers.size());
 		}
 		//System.out.println(lasers.size());
 		for (int i = lasers.size() - 1; i > 0;--i) {
 			if (lasers.get(i).endThis) {
 				lasers.remove(i);
 			}
+		}
+		//show score
+		
+		if (mainPlayer.ypos > -50) {
+			wallpos += 0.1 * (700 + 800*nextGoal - wallpos);
+			wallProgram.enable();
+			Program.currentShaderProgram.shaders[2].uniforms[0].set(new float[]{EnigWindow.width, EnigWindow.height});
+			Program.currentShaderProgram.shaders[2].uniforms[1].set(new float[]{wallpos - mainPlayer.xpos + EnigWindow.width / 2});//2250
+			backgroundObejct.render();
+		}
+		
+		ScoreDisplayer.render(score);
+		
+		
+		if (mainPlayer.ypos > -50) {
+			while (score > nextGoal * (nextGoal + 1) * 5) {
+				++nextGoal;
+			}
+			ScoreDisplayer.render(nextGoal * (nextGoal + 1) * 5, wallpos - mainPlayer.xpos + EnigWindow.width / 2);
+		}
+		
+		if (EnigWindow.mainWindow.keys[UserControls.restart] > 0) {
+			score = 0;
+			mult = 1;
+			nextGoal = 2;
+			columns = new TileCol[999];
+			for (int i = 0; i < columns.length;++i) {
+				columns[i] = new TileCol((float) i * 800);
+			}
+			mainPlayer = new Player();
 		}
 	}
 	
@@ -88,6 +157,7 @@ public class ProjectMain {
 		new EnigWindow();
 		frame = 0;
 		setup();
+		main = this;
 		while ( !glfwWindowShouldClose(EnigWindow.mainWindow.window) ) {
 			EnigWindow.mainWindow.update();
 			++frame;

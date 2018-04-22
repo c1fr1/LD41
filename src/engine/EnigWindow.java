@@ -83,7 +83,7 @@ public class EnigWindow {
 		GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 		width = vidMode.width();
 		height = vidMode.height();
-		window = glfwCreateWindow(width, height, "Enignets game", glfwGetPrimaryMonitor(), NULL);
+		window = glfwCreateWindow(width, height, "Enignets game", /*glfwGetPrimaryMonitor()*/NULL, NULL);//fullscreen
 		if ( window == NULL ) {
 			throw new RuntimeException("Failed to create the GLFW window");
 		}

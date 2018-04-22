@@ -13,9 +13,10 @@ float rand(vec2 co){
 
 void main() {
     color = texture(textureSampler, texCoords);
-    /*if (color.w > 1) {
+    if (color.w > 0.5) {
+        color = vec4(1f, 1f, 1f, 1f);
         float randis = rand(gl_FragCoord.xy);
         float sqrd = randis * randis;
-        color.xyz += sqrd * -color.xyz + tileColor.xyz;
-    }*/
+        color.xyz += sqrd * (tileColor.xyz-color.xyz);
+    }
 }

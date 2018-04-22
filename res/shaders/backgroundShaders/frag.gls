@@ -1,0 +1,17 @@
+#version 400 core
+
+uniform vec3 selectedColor;
+uniform vec2 dims;
+uniform vec3 offset = vec3(0f, 0f, 0f);
+
+out vec4 color;
+
+void main() {
+    color = vec4(selectedColor.xyz, 1f);
+    float x = 2*gl_FragCoord.x/(dims.x) - 1;
+    float y = 2*gl_FragCoord.y/(dims.y) - 1;
+    float off = 1 - ((x - 1) * (x + 1) * (y - 1) * (y + 1));
+    color.x -= off * color.x - offset.x;
+    color.y -= off * color.y - offset.y;
+    color.z -= off * color.z - offset.z;
+}

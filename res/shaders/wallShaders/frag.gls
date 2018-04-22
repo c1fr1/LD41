@@ -1,0 +1,12 @@
+#version 400 core
+
+uniform vec2 dims;
+uniform float offset;
+
+out vec4 color;
+
+void main() {
+    color = vec4(0f, 0f, 0f, 0f);
+    float x = 2*gl_FragCoord.x/(dims.x) - 1;
+    color.w = 50/(2*gl_FragCoord.x - offset);
+}

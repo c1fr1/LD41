@@ -1,0 +1,24 @@
+#version 400 core
+
+layout (location = 0) in vec3 vertices;
+layout (location = 1) in vec2 txtPos;
+out vec2 texCoords;
+
+uniform vec2 dims;
+uniform float even;
+uniform float dig;
+uniform float xoffset;
+
+void main() {
+	gl_Position = vec4(vertices, 1);
+	gl_Position.x += dig*125 + 2*xoffset;
+	gl_Position.x /= 2;
+	gl_Position.y -= 100;
+	gl_Position.xy /= dims;
+	gl_Position.xy -= vec2(1f, -1f);
+	texCoords = txtPos;
+	texCoords.x /= 2f;
+	if (even < 0.5) {
+	    texCoords.x += 0.5f;
+	}
+}

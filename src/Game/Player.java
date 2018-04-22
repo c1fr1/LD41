@@ -3,8 +3,8 @@ package Game;
 import engine.EnigWindow;
 
 public class Player {
-	public float xpos = 10f;
-	public float ypos = 2000f;
+	public float xpos = 250f;
+	public float ypos = 2200f;
 	public float yvel = 0f;
 	public int swapCD = 0;
 	public TileCol.TileColor selection;
@@ -99,7 +99,11 @@ public class Player {
 		}
 		if (EnigWindow.mainWindow.keys[UserControls.right] > 0) {
 			if (!(rd || ru)) {
-				xpos += 10.1f;
+				if (xpos + 960.1f > ProjectMain.wallpos) {
+				
+				}else {
+					xpos += 10.1f;
+				}
 			}else {
 				xpos = Math.round(xpos/TileCol.BOX_SIZE) * TileCol.BOX_SIZE;
 			}
@@ -141,11 +145,13 @@ public class Player {
 			float y2 = ypos - 0.5f*TileCol.BOX_SIZE;
 			closest.safeSwapPoints(x1, y1, x2, y2);
 			int[][] matching = closest.countNeighbors(-1 + (int) (x1/TileCol.BOX_SIZE), (int) (y1/TileCol.BOX_SIZE));
-			if (matching[0].length > 3) {
+			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].equals(selection)) {
+				ProjectMain.score += matching[0].length * ProjectMain.mult;
 				closest.fillPoints(matching, selection);
 			}
 			matching = closest.countNeighbors(-1 + (int) (x2/TileCol.BOX_SIZE), (int) (y2/TileCol.BOX_SIZE));
-			if (matching[0].length > 3) {
+			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].equals(selection)) {
+				ProjectMain.score += matching[0].length * ProjectMain.mult;
 				closest.fillPoints(matching, selection);
 			}
 			swapCD = 11;
@@ -157,11 +163,13 @@ public class Player {
 			float y2 = ypos - 0.5f*TileCol.BOX_SIZE;
 			closest.safeSwapPoints(x1, y1, x2, y2);
 			int[][] matching = closest.countNeighbors(-1 + (int) (x1/TileCol.BOX_SIZE), (int) (y1/TileCol.BOX_SIZE));
-			if (matching[0].length > 4) {
+			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].equals(selection)) {
+				ProjectMain.score += matching[0].length * ProjectMain.mult;
 				closest.fillPoints(matching, selection);
 			}
 			matching = closest.countNeighbors(-1 + (int) (x2/TileCol.BOX_SIZE), (int) (y2/TileCol.BOX_SIZE));
-			if (matching[0].length > 4) {
+			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].equals(selection)) {
+				ProjectMain.score += matching[0].length * ProjectMain.mult;
 				closest.fillPoints(matching, selection);
 			}
 			swapCD = 11;
@@ -173,12 +181,12 @@ public class Player {
 			float y2 = ypos + 0.5f*TileCol.BOX_SIZE;
 			closest.safeSwapPoints(x1, y1, x2, y2);
 			int[][] matching = closest.countNeighbors(-1 + (int) (x1/TileCol.BOX_SIZE), (int) (y1/TileCol.BOX_SIZE));
-			if (matching[0].length > 4) {
+			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].equals(selection)) {
 				ProjectMain.score += matching[0].length * ProjectMain.mult;
 				closest.fillPoints(matching, selection);
 			}
 			matching = closest.countNeighbors(-1 + (int) (x2/TileCol.BOX_SIZE), (int) (y2/TileCol.BOX_SIZE));
-			if (matching[0].length > 4) {
+			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].equals(selection)) {
 				ProjectMain.score += matching[0].length * ProjectMain.mult;
 				closest.fillPoints(matching, selection);
 			}
