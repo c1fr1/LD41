@@ -2,6 +2,7 @@
 
 uniform sampler2D textureSampler;
 uniform vec3 tileColor;
+uniform vec3 borderChange;
 
 in vec2 texCoords;
 
@@ -12,5 +13,7 @@ void main() {
     if (color.w < 0.6 && color.w > 0.4) {
         color.xyz = tileColor + (vec3(0.3f, 0.3f, 0.3f) - color.xyz);
         color.w = 1f;
+    }else {
+        color.xyz += borderChange;
     }
 }

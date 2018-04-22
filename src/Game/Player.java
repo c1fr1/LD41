@@ -7,16 +7,16 @@ public class Player {
 	public float ypos = 2200f;
 	public float yvel = 0f;
 	public int swapCD = 0;
-	public TileCol.TileColor selection;
+	public ColorBlock.TileColor selection;
 	public Player() {
-		selection = TileCol.TileColor.red;
+		selection = ColorBlock.TileColor.red;
 	}
 	public void testActions(TileCol closest) {
 	
 	}
 	public void updateMovement(TileCol closest) {
-		TileCol.TileColor belowLeftj = closest.checkPoint((xpos % 800) + 1f, ypos + yvel - TileCol.BOX_SIZE-5f);
-		TileCol.TileColor belowRightj = closest.checkPoint((xpos % 800) + TileCol.BOX_SIZE - 1f, ypos + yvel - TileCol.BOX_SIZE-5f);
+		ColorBlock.TileColor belowLeftj = closest.checkPoint((xpos % 800) + 1f, ypos + yvel - TileCol.BOX_SIZE-5f);
+		ColorBlock.TileColor belowRightj = closest.checkPoint((xpos % 800) + TileCol.BOX_SIZE - 1f, ypos + yvel - TileCol.BOX_SIZE-5f);
 		boolean llj = true;
 		if (belowLeftj == null) {
 			llj = false;
@@ -36,8 +36,8 @@ public class Player {
 			}
 		}
 		
-		TileCol.TileColor aboveLeft = closest.checkPoint((xpos % 800) + 5f, ypos + yvel);
-		TileCol.TileColor aboveRight = closest.checkPoint((xpos % 800) + TileCol.BOX_SIZE - 5f, ypos + yvel);
+		ColorBlock.TileColor aboveLeft = closest.checkPoint((xpos % 800) + 5f, ypos + yvel);
+		ColorBlock.TileColor aboveRight = closest.checkPoint((xpos % 800) + TileCol.BOX_SIZE - 5f, ypos + yvel);
 		boolean al = true;
 		if (aboveLeft == null) {
 			al = false;
@@ -50,8 +50,8 @@ public class Player {
 		}else if (aboveRight.equals(selection)) {
 			ar = false;
 		}
-		TileCol.TileColor belowLeft = closest.checkPoint((xpos % 800) + 5f, ypos + yvel - TileCol.BOX_SIZE);
-		TileCol.TileColor belowRight = closest.checkPoint((xpos % 800) + TileCol.BOX_SIZE - 5f, ypos + yvel - TileCol.BOX_SIZE);
+		ColorBlock.TileColor belowLeft = closest.checkPoint((xpos % 800) + 5f, ypos + yvel - TileCol.BOX_SIZE);
+		ColorBlock.TileColor belowRight = closest.checkPoint((xpos % 800) + TileCol.BOX_SIZE - 5f, ypos + yvel - TileCol.BOX_SIZE);
 		boolean ll = true;
 		if (belowLeft == null) {
 			ll = false;
@@ -83,8 +83,8 @@ public class Player {
 			}
 		}
 		
-		TileCol.TileColor rightUp = closest.checkPoint((xpos % 800) + TileCol.BOX_SIZE + 10.1f, ypos - 5f);
-		TileCol.TileColor rightDown = closest.checkPoint((xpos % 800) + TileCol.BOX_SIZE + 10.1f, ypos - TileCol.BOX_SIZE + 5f);
+		ColorBlock.TileColor rightUp = closest.checkPoint((xpos % 800) + TileCol.BOX_SIZE + 10.1f, ypos - 5f);
+		ColorBlock.TileColor rightDown = closest.checkPoint((xpos % 800) + TileCol.BOX_SIZE + 10.1f, ypos - TileCol.BOX_SIZE + 5f);
 		boolean ru = true;
 		if (rightUp == null) {
 			ru = false;
@@ -108,8 +108,8 @@ public class Player {
 				xpos = Math.round(xpos/TileCol.BOX_SIZE) * TileCol.BOX_SIZE;
 			}
 		}
-		TileCol.TileColor leftUp = closest.checkPoint((xpos % 800) - 10.1f, ypos - 5f);
-		TileCol.TileColor leftDown = closest.checkPoint((xpos % 800) - 10.1f, ypos - TileCol.BOX_SIZE + 5f);
+		ColorBlock.TileColor leftUp = closest.checkPoint((xpos % 800) - 10.1f, ypos - 5f);
+		ColorBlock.TileColor leftDown = closest.checkPoint((xpos % 800) - 10.1f, ypos - TileCol.BOX_SIZE + 5f);
 		boolean lu = true;
 		if (leftUp == null) {
 			lu = false;
@@ -131,7 +131,7 @@ public class Player {
 		}
 		
 		if (EnigWindow.mainWindow.keys[UserControls.sdown] > 0) {
-			TileCol.TileColor below = closest.checkPoint((xpos % 800) + TileCol.BOX_SIZE/2f, ypos - 1.5f*TileCol.BOX_SIZE);
+			ColorBlock.TileColor below = closest.checkPoint((xpos % 800) + TileCol.BOX_SIZE/2f, ypos - 1.5f*TileCol.BOX_SIZE);
 			if (below != null) {
 				xpos = Math.round(xpos/100) * 100;
 				ypos -= 5f;
@@ -145,12 +145,12 @@ public class Player {
 			float y2 = ypos - 0.5f*TileCol.BOX_SIZE;
 			closest.safeSwapPoints(x1, y1, x2, y2);
 			int[][] matching = closest.countNeighbors(-1 + (int) (x1/TileCol.BOX_SIZE), (int) (y1/TileCol.BOX_SIZE));
-			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].equals(selection)) {
+			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].clr.equals(selection)) {
 				ProjectMain.score += matching[0].length * ProjectMain.mult;
 				closest.fillPoints(matching, selection);
 			}
 			matching = closest.countNeighbors(-1 + (int) (x2/TileCol.BOX_SIZE), (int) (y2/TileCol.BOX_SIZE));
-			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].equals(selection)) {
+			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].clr.equals(selection)) {
 				ProjectMain.score += matching[0].length * ProjectMain.mult;
 				closest.fillPoints(matching, selection);
 			}
@@ -163,12 +163,12 @@ public class Player {
 			float y2 = ypos - 0.5f*TileCol.BOX_SIZE;
 			closest.safeSwapPoints(x1, y1, x2, y2);
 			int[][] matching = closest.countNeighbors(-1 + (int) (x1/TileCol.BOX_SIZE), (int) (y1/TileCol.BOX_SIZE));
-			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].equals(selection)) {
+			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].clr.equals(selection)) {
 				ProjectMain.score += matching[0].length * ProjectMain.mult;
 				closest.fillPoints(matching, selection);
 			}
 			matching = closest.countNeighbors(-1 + (int) (x2/TileCol.BOX_SIZE), (int) (y2/TileCol.BOX_SIZE));
-			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].equals(selection)) {
+			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].clr.equals(selection)) {
 				ProjectMain.score += matching[0].length * ProjectMain.mult;
 				closest.fillPoints(matching, selection);
 			}
@@ -181,12 +181,12 @@ public class Player {
 			float y2 = ypos + 0.5f*TileCol.BOX_SIZE;
 			closest.safeSwapPoints(x1, y1, x2, y2);
 			int[][] matching = closest.countNeighbors(-1 + (int) (x1/TileCol.BOX_SIZE), (int) (y1/TileCol.BOX_SIZE));
-			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].equals(selection)) {
+			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].clr.equals(selection)) {
 				ProjectMain.score += matching[0].length * ProjectMain.mult;
 				closest.fillPoints(matching, selection);
 			}
 			matching = closest.countNeighbors(-1 + (int) (x2/TileCol.BOX_SIZE), (int) (y2/TileCol.BOX_SIZE));
-			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].equals(selection)) {
+			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].clr.equals(selection)) {
 				ProjectMain.score += matching[0].length * ProjectMain.mult;
 				closest.fillPoints(matching, selection);
 			}
