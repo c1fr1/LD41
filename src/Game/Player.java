@@ -143,36 +143,46 @@ public class Player {
 			float y1 = ypos - 0.5f*TileCol.BOX_SIZE;
 			float x2 = (xpos % 800) - TileCol.BOX_SIZE/2f;
 			float y2 = ypos - 0.5f*TileCol.BOX_SIZE;
-			closest.safeSwapPoints(x1, y1, x2, y2);
-			int[][] matching = closest.countNeighbors(-1 + (int) (x1/TileCol.BOX_SIZE), (int) (y1/TileCol.BOX_SIZE));
-			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].clr.equals(selection)) {
-				ProjectMain.score += matching[0].length * ProjectMain.mult;
-				closest.fillPoints(matching, selection);
+			if (closest.safeSwapPoints(x1, y1, x2, y2)) {
+				if (!closest.checkPoint(x1, y1).equals(closest.checkPoint(x2, y2))) {
+					int[][] matching = closest.countNeighbors(-1 + (int) (x1 / TileCol.BOX_SIZE), (int) (y1 / TileCol.BOX_SIZE));
+					if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].clr.equals(selection)) {
+						ProjectMain.score += matching[0].length * ProjectMain.mult;
+						closest.fillPoints(matching, selection);
+					}
+					matching = closest.countNeighbors(-1 + (int) (x2 / TileCol.BOX_SIZE), (int) (y2 / TileCol.BOX_SIZE));
+					if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].clr.equals(selection)) {
+						ProjectMain.score += matching[0].length * ProjectMain.mult;
+						closest.fillPoints(matching, selection);
+					}
+					swapCD = 11;
+					xpos = Math.round(xpos / TileCol.BOX_SIZE - 1) * TileCol.BOX_SIZE;
+					ypos = Math.round(ypos / TileCol.BOX_SIZE) * TileCol.BOX_SIZE;
+				}
 			}
-			matching = closest.countNeighbors(-1 + (int) (x2/TileCol.BOX_SIZE), (int) (y2/TileCol.BOX_SIZE));
-			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].clr.equals(selection)) {
-				ProjectMain.score += matching[0].length * ProjectMain.mult;
-				closest.fillPoints(matching, selection);
-			}
-			swapCD = 11;
 		}
 		if (EnigWindow.mainWindow.keys[UserControls.sright] > 0 && swapCD <= 0) {
 			float x1 = (xpos % 800) + TileCol.BOX_SIZE/2f;
 			float y1 = ypos - 0.5f*TileCol.BOX_SIZE;
 			float x2 = (xpos % 800) + 1.5f*TileCol.BOX_SIZE;
 			float y2 = ypos - 0.5f*TileCol.BOX_SIZE;
-			closest.safeSwapPoints(x1, y1, x2, y2);
-			int[][] matching = closest.countNeighbors(-1 + (int) (x1/TileCol.BOX_SIZE), (int) (y1/TileCol.BOX_SIZE));
-			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].clr.equals(selection)) {
-				ProjectMain.score += matching[0].length * ProjectMain.mult;
-				closest.fillPoints(matching, selection);
+			if (closest.safeSwapPoints(x1, y1, x2, y2)) {
+				if (!closest.checkPoint(x1, y1).equals(closest.checkPoint(x2, y2))) {
+					int[][] matching = closest.countNeighbors(-1 + (int) (x1 / TileCol.BOX_SIZE), (int) (y1 / TileCol.BOX_SIZE));
+					if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].clr.equals(selection)) {
+						ProjectMain.score += matching[0].length * ProjectMain.mult;
+						closest.fillPoints(matching, selection);
+					}
+					matching = closest.countNeighbors(-1 + (int) (x2 / TileCol.BOX_SIZE), (int) (y2 / TileCol.BOX_SIZE));
+					if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].clr.equals(selection)) {
+						ProjectMain.score += matching[0].length * ProjectMain.mult;
+						closest.fillPoints(matching, selection);
+					}
+					swapCD = 11;
+					xpos = Math.round(xpos / TileCol.BOX_SIZE  + 1) * TileCol.BOX_SIZE;
+					ypos = Math.round(ypos / TileCol.BOX_SIZE) * TileCol.BOX_SIZE;
+				}
 			}
-			matching = closest.countNeighbors(-1 + (int) (x2/TileCol.BOX_SIZE), (int) (y2/TileCol.BOX_SIZE));
-			if (matching[0].length > 3 && !closest.colors[matching[0][0]][matching[1][0]].clr.equals(selection)) {
-				ProjectMain.score += matching[0].length * ProjectMain.mult;
-				closest.fillPoints(matching, selection);
-			}
-			swapCD = 11;
 		}
 		if (EnigWindow.mainWindow.keys[UserControls.sup] > 0 && swapCD <= 0) {
 			float x1 = (xpos % 800) + TileCol.BOX_SIZE/2f;

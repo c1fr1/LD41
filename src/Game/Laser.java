@@ -19,8 +19,14 @@ public class Laser {
 			xVel = -25;
 		}
 		float targetY = Math.round(py/TileCol.BOX_SIZE) * TileCol.BOX_SIZE;
-		float row = Math.round(Math.random() * 6) - 3;
+		float row = Math.round(Math.random() * 8) - 4;
 		ypos = targetY + row * TileCol.BOX_SIZE;
+		if (targetY > 1600) {
+			ypos += 1600 - targetY;
+		}
+		if (targetY < 400) {
+			ypos += targetY - 400;
+		}
 		color = ColorBlock.TileColor.getRandom();
 	}
 	public void render(float xPos, float yPos) {

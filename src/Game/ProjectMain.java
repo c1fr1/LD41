@@ -136,10 +136,10 @@ public class ProjectMain {
 		
 		
 		if (mainPlayer.ypos > -50) {
-			while (score > nextGoal * (nextGoal + 1) * 5) {
+			while (score > nextGoal * (nextGoal + 1) * (nextGoal + 2) * 5/3 - 20) {
 				++nextGoal;
 			}
-			ScoreDisplayer.render(nextGoal * (nextGoal + 1) * 5, wallpos - camX + EnigWindow.width / 2);
+			ScoreDisplayer.render(nextGoal * (nextGoal + 1) * (nextGoal + 2) * 5/3 - 20, wallpos - camX + EnigWindow.width / 2);
 		}
 		
 		if (EnigWindow.mainWindow.keys[UserControls.restart] > 0) {
