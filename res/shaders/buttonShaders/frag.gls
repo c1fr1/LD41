@@ -1,0 +1,16 @@
+#version 400 core
+
+uniform sampler2D textureSampler;
+uniform vec4 backgroundColor;
+
+in vec3 verts;
+in vec2 texCoords;
+
+out vec4 color;
+
+void main() {
+    color = texture(textureSampler, texCoords);
+    if (color.w < 0.2) {
+        color = backgroundColor;
+    }
+}

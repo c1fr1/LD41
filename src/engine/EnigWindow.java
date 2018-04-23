@@ -38,8 +38,11 @@ public class EnigWindow {
 
 	public boolean inputEnabled = false;
 	public boolean printFrames = false;
+	public boolean fullscreen = true;
 
+	public int[] mouseButtons = new int[GLFW_MOUSE_BUTTON_LAST + 1];
 	public int[] keys = new int[GLFW_KEY_LAST + 1];
+	public int mousePressStatus;
 	
 	public int framesSinceLastSecond = 0;
 	public int lastFrameCount = 0;
@@ -83,7 +86,11 @@ public class EnigWindow {
 		GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 		width = vidMode.width();
 		height = vidMode.height();
-		window = glfwCreateWindow(width, height, "Enignets game", /*glfwGetPrimaryMonitor()*/NULL, NULL);//fullscreen
+		if (fullscreen) {
+			window = glfwCreateWindow(width, height, "Enignets game", glfwGetPrimaryMonitor()/*NULL*/, NULL);//fullscreen
+		}else {
+			window = glfwCreateWindow(width, height, "Enignets game", /*glfwGetPrimaryMonitor()*/NULL, NULL);//fullscreen
+		}
 		if ( window == NULL ) {
 			throw new RuntimeException("Failed to create the GLFW window");
 		}
@@ -107,10 +114,19 @@ public class EnigWindow {
 					cursorYOffset += cursorYDouble - ypos;
 					cursorXDouble = xpos;
 					cursorYDouble = ypos;
-					cursorXFloat = (float) (xpos - width / 2) / (float) width;
-					cursorYFloat = (float) (ypos - height / 2) / (float) height;
+					cursorXFloat = (float) (2*xpos - width) / (float) width;
+					cursorYFloat = (float) (2*ypos - height) / (float) height;
+				}else {
+					cursorXDouble = xpos;
+					cursorYDouble = ypos;
+					cursorXFloat = (float) (2*xpos - width) / (float) width;
+					cursorYFloat = (float) -(2*ypos - height) / (float) height;
 				}
 			}
+		});
+		
+		glfwSetMouseButtonCallback(window, (long window, int button, int action, int mods) -> {
+			mouseButtons[button] = action;
 		});
 
 

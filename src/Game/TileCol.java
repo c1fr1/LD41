@@ -70,7 +70,7 @@ public class TileCol {
 		ColorBlock.TileColor temp = colors[x1ind][y1ind].clr;
 		colors[x1ind][y1ind].clr = colors[x2ind][y2ind].clr;
 		colors[x2ind][y2ind].clr = temp;
-		return false;
+		return true;
 	}
 	public void swapPoints(int x1, int y1, int x2, int y2) {
 		ColorBlock.TileColor temp = colors[x1][y1].clr;
